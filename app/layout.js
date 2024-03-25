@@ -2,6 +2,7 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { getDocuments } from '@/lib/doc';
 import { Inter } from 'next/font/google';
+import { Suspense } from 'react';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -26,7 +27,9 @@ export default function RootLayout({ children }) {
                                     <div className="absolute inset-0 bg-gradient-to-r from-[#36b49f] to-[#DBFF75] opacity-40 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] dark:from-[#36b49f]/30 dark:to-[#DBFF75]/30 dark:opacity-100"></div>
                                 </div>
                             </div>
-                            {children}
+                            <Suspense fallback={<span>Loading...</span>}>
+                                {children}
+                            </Suspense>
                         </main>
                         <Footer />
                     </div>
