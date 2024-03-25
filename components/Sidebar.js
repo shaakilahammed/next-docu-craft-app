@@ -1,16 +1,53 @@
+'use client';
+import {
+    getDocumentsByAuthor,
+    getDocumentsByCategory,
+    getDocumentsByTag,
+} from '@/utils/utils';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const Sidebar = ({ documents }) => {
-    const rootDocuments = documents.filter((doc) => !doc.parent);
+    const pathName = usePathname();
+    // console.log(pathName);
+
+    let filteredDocuments = documents;
+    if (pathName.includes('/tags')) {
+        const tag = pathName.split('/')[2];
+        filteredDocuments = getDocumentsByTag(documents, tag);
+    } else if (pathName.includes('/categories')) {
+        const category = pathName.split('/')[2];
+        filteredDocuments = getDocumentsByCategory(documents, category);
+    } else if (pathName.includes('/authors')) {
+        const author = pathName.split('/')[2];
+        filteredDocuments = getDocumentsByAuthor(documents, author);
+    }
+
+    const rootDocuments = filteredDocuments.filter((doc) => !doc.parent);
     const nonRootDocuments = Object.groupBy(
-        documents.filter((doc) => doc.parent),
+        filteredDocuments.filter((doc) => doc.parent),
         ({ parent }) => parent
     );
+    const nonRootsKeys = Reflect.ownKeys(nonRootDocuments);
+    nonRootsKeys.forEach((key) => {
+        const foundInRoots = rootDocuments.find((root) => root.id === key);
+        if (!foundInRoots) {
+            const foundInDocs = documents.find((doc) => doc.id === key);
+            rootDocuments.push(foundInDocs);
+        }
+    });
 
-    console.log(nonRootDocuments);
+    rootDocuments.sort((a, b) => {
+        if (a.order < b.order) {
+            return -1;
+        } else {
+            return 1;
+        }
+    });
+
     return (
         <nav className="hidden lg:mt-10 lg:block">
-            <ul role="list" className="border-l border-transparent">
+            <ul role="list" className="border-l border-zinc-300">
                 {rootDocuments.map((doc) => (
                     <li key={doc.id} className="relative">
                         <Link
