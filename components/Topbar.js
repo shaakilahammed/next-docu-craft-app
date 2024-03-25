@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Search from './Search';
 
-const Topbar = () => {
+const Topbar = ({ documents }) => {
     return (
         <div
             className="fixed inset-x-0 top-0 z-50 bg-white bg-white/[var(--bg-opacity-light)] px-4 backdrop-blur-sm transition dark:bg-[#17181C] dark:backdrop-blur sm:px-6 lg:left-72 lg:z-30 lg:px-8 xl:left-80"
@@ -11,7 +11,7 @@ const Topbar = () => {
                 <div className="absolute inset-x-0 top-full h-px bg-zinc-900/7.5 transition dark:bg-white/7.5"></div>
 
                 {/* Large device search */}
-                <Search />
+                <Search documents={documents} />
 
                 {/* <!-- Mobile Responsive Header Starts --> */}
                 <div className="flex items-center gap-5 lg:hidden">

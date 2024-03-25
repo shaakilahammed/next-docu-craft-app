@@ -9,7 +9,7 @@ const Header = ({ documents }) => {
             <Logo />
             {/* <!-- Logo Ends --> */}
             {/* <!-- Header --> */}
-            <Topbar />
+            <Topbar documents={documents} />
             {/* <!-- Header Ends --> */}
 
             {/* <!-- sidebar nav --> */}
