@@ -3,6 +3,7 @@ import {
     getDocumentsByAuthor,
     getDocumentsByCategory,
     getDocumentsByTag,
+    groupBy,
 } from '@/utils/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -24,7 +25,7 @@ const Sidebar = ({ documents }) => {
     }
 
     const rootDocuments = filteredDocuments.filter((doc) => !doc.parent);
-    const nonRootDocuments = Object.groupBy(
+    const nonRootDocuments = groupBy(
         filteredDocuments.filter((doc) => doc.parent),
         ({ parent }) => parent
     );
